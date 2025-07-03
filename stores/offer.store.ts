@@ -11,17 +11,16 @@ export const useOfferStore = defineStore('offerStore', {
     }),
     actions : {
         async fetch() {
-            try {
+            if(this.loaded == false) {
                 this.loading = true
-                const data = await $fetch('/api/jobs')
-
-                this.familleDeMetiers = data.familleDeMetiers
-                this.localisation = data.localisation
-                this.typeContrat = data.typeContrat
-                this.offers = data.offers
-            } finally {
-                this.loading = false
-                this.loaded = true
+                try {
+                    await $fetch('/api/job/contrat/type').then((data) => this.typeContrat = data)
+                    await $fetch('/api/job/famille-de-metier').then((data) => this.familleDeMetiers = data)
+                    await $fetch('/api/job/offres').then((data) => this.offers = data)
+                } finally {
+                    this.loaded = false
+                    this.loading = false
+                }
             }
         }
     },
@@ -33,6 +32,8 @@ export const useOfferStore = defineStore('offerStore', {
         getJobByReference : (state) => (reference) => {
             return state.offers.find((offer) => offer.reference === reference)
         },
-        getJobOffers : (state) => () => state.offers
+        getJobOffers : (state) => () => state.offers,
+        getTypesContract : (state) => () => state.typeContrat,
+        getFamilleDeMetiers : (state) => () => state.familleDeMetiers
     }
 })

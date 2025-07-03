@@ -40,17 +40,28 @@ export class LaSecuRecruteService {
 
     }
 
-    async fetchJobs() {
+    async init() {
         if(this.document === null) {
             this.document = await this.doRemoteCall()
         }
+    }
 
-        return {
-            familleDeMetiers: this.extractFamilleDeMetiers(this.document),
-            localisation: this.extractLocalisation(this.document),
-            typeContrat: this.extractTypeContrat(this.document),
-            offers: this.extractOffres(this.document)
-        }
+    async getTypesContract() {
+        await this.init()
+
+        return this.extractTypeContrat(this.document!)
+    }
+
+    async getFamilleDeMetiers() {
+        await this.init()
+
+        return this.extractFamilleDeMetiers(this.document!)
+    }
+
+    async getOffres() {
+        await this.init()
+
+        return this.extractOffres(this.document!)
     }
 
     /**
@@ -156,6 +167,7 @@ export class LaSecuRecruteService {
             publication : '',
             region: '',
             departement: {},
+            normalizedLocalisation: ''
         };
 
         const header = anArticle.querySelector('header');

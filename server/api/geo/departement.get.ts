@@ -7,7 +7,8 @@ export default defineEventHandler(async (event) => {
         .map((elem) => {
             return {
                 numDep: elem.numDep,
-                name: elem.name
+                name: elem.name,
+                description : `${elem.numDep} - ${elem.name}`
             }
         })
 })

@@ -3,9 +3,7 @@ import {LaSecuRecruteService} from '~/service/lasecurecrute.service'
 export default defineEventHandler(async (event) => {
     const runtimeConfig = useRuntimeConfig()
     try {
-        const service = LaSecuRecruteService.getInstance()
-        const result = await service.fetchJobs()
-        return result
+        return LaSecuRecruteService.getInstance().getOffres()
     } catch (error) {
         return {
             success: false,
